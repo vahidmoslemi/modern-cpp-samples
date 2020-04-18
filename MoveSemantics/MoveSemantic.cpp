@@ -136,8 +136,12 @@ int main()
 	std::cout<<"Data1: "<<db1.getData()<<std::endl;
 
 	//Move Constructor will be invoked: remember to disable RVO : g++ -fno-elide-constructors MoveSemantic.cpp
-	DataBuffer db2(createInputBuffer());
+	DataBuffer db2 (createInputBuffer());	
 	std::cout<<"Data2: "<<db2.getData()<<std::endl;
+	
+	db2 = db1;
+	
+	db2 = DataBuffer("TempBuffer");
 
 	printBuffer(DataBuffer("On the Fly Buffer"));
 
