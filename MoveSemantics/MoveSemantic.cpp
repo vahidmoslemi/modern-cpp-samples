@@ -1,5 +1,4 @@
 #include<iostream>
-#include<vector>
 #include<cstring>
 #include<memory>
 /*
@@ -12,9 +11,8 @@
 */
 
 #define DEFAULT_BUFFER_SIZE 100
-
 typedef unsigned char Byte;
-typedef std::vector<Byte> ByteArray;
+const Byte result[1]{'\0'};
 
 //Implementing sample class (DataBuffer) using Rule of 5: Copy/Move Constructor + Copy/Move Assignment Operator + Destructor
 class DataBuffer{
@@ -108,7 +106,15 @@ class DataBuffer{
 			std::cout<<"SetData invoked"<<std::endl;
 		}
 		
-		const Byte* getData() { return m_data;} 
+		const Byte* getData() 
+		{
+			if(m_data!=nullptr || m_data_size > 0) 
+				return m_data;
+			else
+			{
+				return result;
+			}
+		} 
 
 	private:
 		unsigned int  m_data_size;
@@ -142,6 +148,13 @@ int main()
 	db2 = db1;
 	
 	db2 = DataBuffer("TempBuffer");
+	std::cout<<"Data2: "<<db2.getData()<<std::endl;
+
+	db2 = std::move(db1);
+	std::cout<<"Data2: "<<db2.getData()<<std::endl;
+
+	std::cout<<"Data1 moved: "<<db1.getData()<<std::endl;
+	
 
 	printBuffer(DataBuffer("On the Fly Buffer"));
 
