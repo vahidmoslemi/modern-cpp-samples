@@ -154,9 +154,15 @@ int main()
 	std::cout<<"Data2: "<<db2.getData()<<std::endl;
 
 	std::cout<<"Data1 moved: "<<db1.getData()<<std::endl;
-	
 
 	printBuffer(DataBuffer("On the Fly Buffer"));
+
+	db1.setData(" Modern C++!");
+	std::cout<<"Set db1 again to '"<<db1.getData()<<"'"<<std::endl;
+	std::cout<<"Swapping db1 and db2 data using Move Semantics"<<std::endl;
+        std::swap(db1,db2);
+
+        std::cout<<"Final Message: "<<db1.getData()<<db2.getData()<<std::endl;
 
 	return 0;
 }
