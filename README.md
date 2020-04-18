@@ -1,5 +1,5 @@
 # modern-cpp-samples
-A collection of modern C++ sample projects to demonstrate new features and their possible use-cases, Hope this will help modern C++ newbies. Compiled and tested under Fedora Linux x64 with Qt Creator 4.10.0
+A collection of modern C++ sample projects to demonstrate new features and their possible use-cases, Hope this will help modern C++ newbies. Compiled and tested under Fedora Linux x64 with g++ or simply using Qt Creator 4.10.0
 
 
 Here I'll try to put sample codes and learning references which I have learned and tested to deep learning the Modern C++ concepts.
