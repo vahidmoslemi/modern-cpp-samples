@@ -10,3 +10,10 @@ Please help me by your critics and encouraging comments.
 
 Please fill free to ask your questions (Better to place in Stackoverflow website and inform me throw comments),
 I'll try my best to answer any questions regarding the sample codes.
+
+# Sections: #
+-CommonMistakes: sample codes to demonstrate common mistakes in modern C++ programming and how to avoid them
+-Special sample codes to demonstrate a feature:
+  * MoveSemantics
+  
+-moderncpp1: simple project to use most commonly used modern c++ features this code needs to be cleaned up or may be re-implemented
