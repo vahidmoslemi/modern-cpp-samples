@@ -5,9 +5,19 @@
 	In this sample code I tried to demonstrate use of move semantics using RValue References in modern C++
 	Special thanks to this link: https://www.internalpointers.com/post/c-rvalue-references-and-move-semantics-beginners
 	
-	Notice:
+	Notice Only for learning purposes:
 		Inorder to see when Move/Copy Constructors are invoked please disable ReturnValueOptimization in g++:
 	 	g++ -fno-elide-constructors MoveSemantic.cpp
+	
+	More on Return Value Optimization (RVO):
+		In case of RVO, the compiler will not even invoke redundant Move/Copy Contructor and 
+		directly construct the return value of a function at the call site.
+		
+	According to https://www.ibm.com/developerworks/community/blogs/5894415f-be62-4bc0-81c5-3956e82276f3/entry/RVO_V_S_std_move?lang=en:
+		To summarize, RVO is a compiler optimization technique, while std::move is just an rvalue cast,
+		which also instructs the compiler that it's eligible to move the object. The price of moving is 
+		lower than copying but higher than RVO, so never apply std::move to local objects if they would otherwise be eligible for the RVO.
+		
 */
 
 #define DEFAULT_BUFFER_SIZE 100
@@ -49,7 +59,7 @@ class DataBuffer{
 		}
 
 		//Move Constructor using RValue Reference ( optional: use noexcept for better code optimization) Move Conxtructor will not throw
-		DataBuffer(DataBuffer&& other)
+		DataBuffer(DataBuffer&& other) noexcept
 		{
 			//grab/steal resource and data from  the other object
 			m_data_size = other.m_data_size;
@@ -76,21 +86,21 @@ class DataBuffer{
 			return *this;
 		}
 
-                //Move Assignment Operator
-                DataBuffer& operator=(DataBuffer&&  other)
-                {
-                        //avoid self copy
-                        if(this!=&other)
-                        {
+		//Move Assignment Operator
+		DataBuffer& operator=(DataBuffer&&  other)
+		{
+			//avoid self copy
+			if(this!=&other)
+			{
 				delete[] m_data;
-                                m_data_size = other.m_data_size;
-                                m_data = other.m_data;
+								m_data_size = other.m_data_size;
+								m_data = other.m_data;
 				other.m_data = nullptr;
 				other.m_data_size = 0;
-                        }
+			}
 			std::cout<<"Move Assignment Operator used"<<std::endl;
-                        return *this;
-                }
+			return *this;
+		}
 
 		DataBuffer& operator+(DataBuffer&& other)
 		{
@@ -121,12 +131,16 @@ class DataBuffer{
 		Byte* m_data;
 };
 
+//This function is placed only for learing purpose
 DataBuffer createInputBuffer()
 {
 	std::cout<<"inside createInputBuffer()"<<std::endl;
 	DataBuffer input_buf("Input");
 	//Move Constructor is used in order to return DataBuffer Object and then local variable will be destructed.
 	return input_buf;
+	
+	//Instead of the above 2 lines we could use inline object construction: This will lead to better optimization based on ReturnValueOptimization (RVO)
+	//return DataBuffer("Input");
 }
 
 void printBuffer(DataBuffer&& buffer)
